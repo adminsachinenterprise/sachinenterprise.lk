@@ -1,0 +1,255 @@
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;700&family=Open+Sans:wght@400;600&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  .page {
+    min-height: 600px;
+    background: #0d1b2a;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 24px;
+    position: relative;
+    overflow: hidden;
+    font-family: 'Open Sans', sans-serif;
+  }
+  .grid-bg {
+    position: absolute; inset: 0;
+    background-image:
+      repeating-linear-gradient(0deg, transparent, transparent 59px, rgba(255,255,255,0.025) 60px),
+      repeating-linear-gradient(90deg, transparent, transparent 59px, rgba(255,255,255,0.025) 60px);
+    pointer-events: none;
+  }
+  .glow {
+    position: absolute;
+    width: 500px; height: 500px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(232,160,32,0.08) 0%, transparent 70%);
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+  }
+  .inner {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  .shield {
+    margin-bottom: 32px;
+    filter: drop-shadow(0 0 20px rgba(232,160,32,0.35));
+  }
+  h1 {
+    font-family: 'Oswald', sans-serif;
+    font-size: clamp(36px, 8vw, 64px);
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: 2px;
+    line-height: 1;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  h1 span { color: #e8a020; }
+  .sub {
+    font-family: 'Oswald', sans-serif;
+    font-weight: 300;
+    font-size: 13px;
+    letter-spacing: 5px;
+    color: rgba(255,255,255,0.35);
+    text-transform: uppercase;
+    margin-bottom: 36px;
+  }
+  .line {
+    width: 1px;
+    height: 40px;
+    background: linear-gradient(to bottom, #e8a020, transparent);
+    margin: 0 auto 36px;
+  }
+  .cs-label {
+    font-family: 'Oswald', sans-serif;
+    font-size: clamp(48px, 12vw, 96px);
+    font-weight: 700;
+    letter-spacing: 8px;
+    text-transform: uppercase;
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(255,255,255,0.08);
+    position: absolute;
+    width: 100%;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    user-select: none;
+    white-space: nowrap;
+  }
+  .countdown {
+    display: flex;
+    gap: 24px;
+    margin-bottom: 40px;
+  }
+  .cd-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+  }
+  .cd-num {
+    font-family: 'Oswald', sans-serif;
+    font-size: 36px;
+    font-weight: 700;
+    color: #fff;
+    line-height: 1;
+    min-width: 54px;
+    text-align: center;
+    background: rgba(255,255,255,0.05);
+    border: 0.5px solid rgba(232,160,32,0.25);
+    border-radius: 4px;
+    padding: 10px 6px 8px;
+  }
+  .cd-lbl {
+    font-size: 9px;
+    letter-spacing: 2px;
+    color: rgba(255,255,255,0.3);
+    text-transform: uppercase;
+    font-family: 'Oswald', sans-serif;
+    font-weight: 400;
+  }
+  .cd-sep {
+    font-family: 'Oswald', sans-serif;
+    font-size: 28px;
+    color: #e8a020;
+    align-self: flex-start;
+    margin-top: 10px;
+    line-height: 1;
+  }
+  .notify-row {
+    display: flex;
+    gap: 0;
+    width: 100%;
+    max-width: 360px;
+    margin-bottom: 32px;
+    border: 0.5px solid rgba(232,160,32,0.3);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .notify-row input {
+    flex: 1;
+    background: rgba(255,255,255,0.05);
+    border: none;
+    outline: none;
+    color: #fff;
+    font-size: 13px;
+    padding: 12px 16px;
+    font-family: 'Open Sans', sans-serif;
+  }
+  .notify-row input::placeholder { color: rgba(255,255,255,0.25); }
+  .notify-row button {
+    background: #e8a020;
+    border: none;
+    color: #0d1b2a;
+    font-family: 'Oswald', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    padding: 12px 18px;
+    cursor: pointer;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  .notify-row button:hover { background: #f0b030; }
+  .msg { font-size: 11px; color: #e8a020; min-height: 16px; margin-bottom: 24px; letter-spacing: 0.5px; }
+  .social-row {
+    display: flex;
+    gap: 14px;
+  }
+  .soc {
+    width: 36px; height: 36px;
+    border: 0.5px solid rgba(255,255,255,0.12);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    color: rgba(255,255,255,0.4);
+    font-size: 16px;
+    cursor: pointer;
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .soc:hover { border-color: #e8a020; color: #e8a020; }
+  .footer-txt {
+    position: absolute;
+    bottom: 16px;
+    font-size: 10px;
+    color: rgba(255,255,255,0.15);
+    letter-spacing: 2px;
+    font-family: 'Oswald', sans-serif;
+    text-transform: uppercase;
+    width: 100%;
+    text-align: center;
+  }
+</style>
+
+<div class="page">
+  <div class="grid-bg"></div>
+  <div class="glow"></div>
+  <div class="cs-label">Coming Soon</div>
+
+  <div class="inner">
+    <svg class="shield" width="110" height="126" viewBox="0 0 110 126" xmlns="http://www.w3.org/2000/svg">
+      <path d="M55 3 L104 24 L104 70 C104 99 80 118 55 126 C30 118 6 99 6 70 L6 24 Z" fill="#e8a020"/>
+      <path d="M55 10 L97 29 L97 70 C97 96 75 113 55 120 C35 113 13 96 13 70 L13 29 Z" fill="#0d1b2a"/>
+      <path d="M55 18 L90 34 L90 70 C90 93 70 108 55 114 C40 108 20 93 20 70 L20 34 Z" fill="#e8a020" opacity="0.12"/>
+      <text x="55" y="82" text-anchor="middle" font-family="Oswald,sans-serif" font-size="44" font-weight="700" fill="#e8a020">S</text>
+    </svg>
+
+    <h1><span>Sachin</span></h1>
+    <h1>Enterprises</h1>
+    <p class="sub">Something great is coming</p>
+    <div class="line"></div>
+
+    <div class="countdown" id="countdown">
+      <div class="cd-block"><div class="cd-num" id="cd-d">00</div><div class="cd-lbl">Days</div></div>
+      <div class="cd-sep">:</div>
+      <div class="cd-block"><div class="cd-num" id="cd-h">00</div><div class="cd-lbl">Hours</div></div>
+      <div class="cd-sep">:</div>
+      <div class="cd-block"><div class="cd-num" id="cd-m">00</div><div class="cd-lbl">Mins</div></div>
+      <div class="cd-sep">:</div>
+      <div class="cd-block"><div class="cd-num" id="cd-s">00</div><div class="cd-lbl">Secs</div></div>
+    </div>
+
+    <div class="notify-row">
+      <input type="email" placeholder="Enter your email" id="emailIn"/>
+      <button onclick="handleNotify()">Notify Me</button>
+    </div>
+    <div class="msg" id="msg"></div>
+
+  
+  </div>
+
+  <div class="footer-txt">© 2026 Sachin Enterprises</div>
+</div>
+
+<script>
+const launch = new Date('2026-09-01T00:00:00');
+function pad(n){ return String(n).padStart(2,'0'); }
+function tick(){
+  const diff = launch - new Date();
+  if(diff <= 0){ document.getElementById('cd-d').textContent='00'; return; }
+  const d = Math.floor(diff/86400000);
+  const h = Math.floor((diff%86400000)/3600000);
+  const m = Math.floor((diff%3600000)/60000);
+  const s = Math.floor((diff%60000)/1000);
+  document.getElementById('cd-d').textContent=pad(d);
+  document.getElementById('cd-h').textContent=pad(h);
+  document.getElementById('cd-m').textContent=pad(m);
+  document.getElementById('cd-s').textContent=pad(s);
+}
+tick(); setInterval(tick,1000);
+
+function handleNotify(){
+  const v = document.getElementById('emailIn').value.trim();
+  const m = document.getElementById('msg');
+  if(!v || !v.includes('@')){ m.style.color='#e05555'; m.textContent='Please enter a valid email.'; return; }
+  m.style.color='#e8a020'; m.textContent='✓ You will be notified on launch!';
+  document.getElementById('emailIn').value='';
+}
+</script>
