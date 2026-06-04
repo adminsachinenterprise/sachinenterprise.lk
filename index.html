@@ -1,255 +1,591 @@
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Sachin Enterprises — Coming Soon</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;600;700&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;700&family=Open+Sans:wght@400;600&display=swap');
-  * { margin: 0; padding: 0; box-sizing: border-box; }
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --gold: #e8a020;
+    --gold-light: #f0b840;
+    --gold-dim: rgba(232,160,32,0.18);
+    --bg: #0b1622;
+    --surface: rgba(255,255,255,0.04);
+    --border: rgba(232,160,32,0.22);
+    --text: #ffffff;
+    --text-muted: rgba(255,255,255,0.32);
+    --text-sub: rgba(255,255,255,0.55);
+    --red: #e05555;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    min-height: 100dvh;
+    background: var(--bg);
+    font-family: 'Barlow', sans-serif;
+    color: var(--text);
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ── BACKGROUND ── */
+  .bg-layer {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .bg-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      repeating-linear-gradient(0deg, transparent, transparent 59px, rgba(255,255,255,0.018) 60px),
+      repeating-linear-gradient(90deg, transparent, transparent 59px, rgba(255,255,255,0.018) 60px);
+  }
+  .bg-glow-1 {
+    position: absolute;
+    width: min(700px, 120vw);
+    height: min(700px, 120vw);
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(232,160,32,0.07) 0%, transparent 65%);
+    top: 40%; left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  .bg-glow-2 {
+    position: absolute;
+    width: min(300px, 80vw);
+    height: min(300px, 80vw);
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(232,160,32,0.05) 0%, transparent 70%);
+    bottom: 0; right: 0;
+    transform: translate(30%, 30%);
+  }
+
+  /* ── WATERMARK ── */
+  .watermark {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+  }
+  .watermark span {
+    font-family: 'Oswald', sans-serif;
+    font-size: clamp(60px, 18vw, 180px);
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(255,255,255,0.04);
+    white-space: nowrap;
+    user-select: none;
+  }
+
+  /* ── MAIN LAYOUT ── */
   .page {
-    min-height: 600px;
-    background: #0d1b2a;
+    position: relative;
+    z-index: 1;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 100dvh;
+  }
+
+  /* ── HEADER ── */
+  header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: clamp(16px, 4vw, 28px) clamp(20px, 6vw, 64px);
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    background: rgba(11,22,34,0.5);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  .header-logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+  }
+  .logo-icon {
+    width: 36px;
+    height: 36px;
+    flex-shrink: 0;
+    filter: drop-shadow(0 0 8px rgba(232,160,32,0.4));
+  }
+  .logo-text {
+    font-family: 'Oswald', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text);
+    line-height: 1;
+  }
+  .logo-text span { color: var(--gold); }
+  .header-badge {
+    font-family: 'Oswald', sans-serif;
+    font-size: 10px;
+    letter-spacing: 3px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    border: 1px solid rgba(255,255,255,0.08);
+    padding: 5px 12px;
+    border-radius: 2px;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    flex: 1;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 60px 24px;
-    position: relative;
-    overflow: hidden;
-    font-family: 'Open Sans', sans-serif;
-  }
-  .grid-bg {
-    position: absolute; inset: 0;
-    background-image:
-      repeating-linear-gradient(0deg, transparent, transparent 59px, rgba(255,255,255,0.025) 60px),
-      repeating-linear-gradient(90deg, transparent, transparent 59px, rgba(255,255,255,0.025) 60px);
-    pointer-events: none;
-  }
-  .glow {
-    position: absolute;
-    width: 500px; height: 500px;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(232,160,32,0.08) 0%, transparent 70%);
-    top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    pointer-events: none;
-  }
-  .inner {
-    position: relative;
-    z-index: 2;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
     text-align: center;
+    padding: clamp(40px, 8vw, 80px) clamp(20px, 6vw, 64px);
+    gap: 0;
   }
-  .shield {
-    margin-bottom: 32px;
-    filter: drop-shadow(0 0 20px rgba(232,160,32,0.35));
+
+  /* Shield */
+  .shield-wrap {
+    margin-bottom: clamp(24px, 5vw, 40px);
+    animation: float 5s ease-in-out infinite;
+    filter: drop-shadow(0 0 28px rgba(232,160,32,0.3));
   }
-  h1 {
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
+  .shield-wrap svg {
+    width: clamp(70px, 14vw, 110px);
+    height: auto;
+  }
+
+  /* Title */
+  .title-group {
+    margin-bottom: clamp(8px, 2vw, 12px);
+  }
+  .title-line {
     font-family: 'Oswald', sans-serif;
-    font-size: clamp(36px, 8vw, 64px);
+    font-size: clamp(36px, 10vw, 80px);
     font-weight: 700;
-    color: #fff;
-    letter-spacing: 2px;
-    line-height: 1;
+    letter-spacing: 0.04em;
+    line-height: 0.95;
     text-transform: uppercase;
-    margin-bottom: 4px;
   }
-  h1 span { color: #e8a020; }
-  .sub {
+  .title-line.gold { color: var(--gold); }
+  .title-line.white { color: var(--text); }
+
+  .tagline {
     font-family: 'Oswald', sans-serif;
+    font-size: clamp(10px, 2vw, 13px);
     font-weight: 300;
-    font-size: 13px;
-    letter-spacing: 5px;
-    color: rgba(255,255,255,0.35);
+    letter-spacing: 0.4em;
+    color: var(--text-muted);
     text-transform: uppercase;
-    margin-bottom: 36px;
+    margin-top: clamp(8px, 2vw, 14px);
+    margin-bottom: clamp(24px, 5vw, 40px);
   }
-  .line {
-    width: 1px;
-    height: 40px;
-    background: linear-gradient(to bottom, #e8a020, transparent);
-    margin: 0 auto 36px;
-  }
-  .cs-label {
-    font-family: 'Oswald', sans-serif;
-    font-size: clamp(48px, 12vw, 96px);
-    font-weight: 700;
-    letter-spacing: 8px;
-    text-transform: uppercase;
-    color: transparent;
-    -webkit-text-stroke: 1px rgba(255,255,255,0.08);
-    position: absolute;
+
+  /* Divider */
+  .divider {
+    display: flex;
+    align-items: center;
+    gap: 16px;
     width: 100%;
-    top: 50%;
-    transform: translateY(-50%);
-    pointer-events: none;
-    user-select: none;
-    white-space: nowrap;
+    max-width: 320px;
+    margin-bottom: clamp(28px, 6vw, 48px);
   }
+  .div-line {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--border));
+  }
+  .div-line.rev { background: linear-gradient(to left, transparent, var(--border)); }
+  .div-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--gold);
+    box-shadow: 0 0 8px rgba(232,160,32,0.6);
+  }
+
+  /* ── COUNTDOWN ── */
   .countdown {
     display: flex;
-    gap: 24px;
-    margin-bottom: 40px;
+    align-items: flex-start;
+    gap: clamp(8px, 3vw, 20px);
+    margin-bottom: clamp(32px, 7vw, 52px);
+    flex-wrap: wrap;
+    justify-content: center;
   }
   .cd-block {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 4px;
+    gap: 6px;
   }
   .cd-num {
     font-family: 'Oswald', sans-serif;
-    font-size: 36px;
+    font-size: clamp(28px, 8vw, 52px);
     font-weight: 700;
-    color: #fff;
+    color: var(--text);
     line-height: 1;
-    min-width: 54px;
+    min-width: clamp(58px, 14vw, 80px);
     text-align: center;
-    background: rgba(255,255,255,0.05);
-    border: 0.5px solid rgba(232,160,32,0.25);
-    border-radius: 4px;
-    padding: 10px 6px 8px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: clamp(10px, 2vw, 14px) 8px clamp(8px, 1.5vw, 12px);
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.3s;
+  }
+  .cd-num::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(232,160,32,0.04) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .cd-num.pulse {
+    border-color: rgba(232,160,32,0.5);
+    animation: pulse-border 0.25s ease-out;
+  }
+  @keyframes pulse-border {
+    0% { box-shadow: 0 0 0 0 rgba(232,160,32,0.3); }
+    100% { box-shadow: 0 0 0 6px transparent; }
   }
   .cd-lbl {
-    font-size: 9px;
-    letter-spacing: 2px;
-    color: rgba(255,255,255,0.3);
-    text-transform: uppercase;
     font-family: 'Oswald', sans-serif;
+    font-size: clamp(8px, 1.5vw, 10px);
+    letter-spacing: 0.2em;
+    color: var(--text-muted);
+    text-transform: uppercase;
     font-weight: 400;
   }
   .cd-sep {
     font-family: 'Oswald', sans-serif;
-    font-size: 28px;
-    color: #e8a020;
-    align-self: flex-start;
-    margin-top: 10px;
+    font-size: clamp(20px, 5vw, 36px);
+    font-weight: 700;
+    color: var(--gold);
     line-height: 1;
+    padding-top: clamp(12px, 3vw, 20px);
   }
-  .notify-row {
-    display: flex;
-    gap: 0;
+
+  /* ── NOTIFY FORM ── */
+  .notify-section {
     width: 100%;
-    max-width: 360px;
-    margin-bottom: 32px;
-    border: 0.5px solid rgba(232,160,32,0.3);
-    border-radius: 4px;
-    overflow: hidden;
+    max-width: 400px;
+    margin-bottom: clamp(8px, 2vw, 16px);
   }
-  .notify-row input {
+  .notify-form {
+    display: flex;
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    overflow: hidden;
+    background: rgba(255,255,255,0.03);
+    transition: border-color 0.3s;
+  }
+  .notify-form:focus-within {
+    border-color: rgba(232,160,32,0.55);
+    box-shadow: 0 0 0 3px rgba(232,160,32,0.08);
+  }
+  .notify-form input {
     flex: 1;
-    background: rgba(255,255,255,0.05);
+    min-width: 0;
+    background: transparent;
     border: none;
     outline: none;
-    color: #fff;
-    font-size: 13px;
-    padding: 12px 16px;
-    font-family: 'Open Sans', sans-serif;
+    color: var(--text);
+    font-family: 'Barlow', sans-serif;
+    font-size: clamp(12px, 3vw, 14px);
+    padding: clamp(11px, 2.5vw, 14px) clamp(12px, 3vw, 18px);
+    caret-color: var(--gold);
   }
-  .notify-row input::placeholder { color: rgba(255,255,255,0.25); }
-  .notify-row button {
-    background: #e8a020;
+  .notify-form input::placeholder { color: var(--text-muted); }
+  .notify-btn {
+    background: var(--gold);
     border: none;
-    color: #0d1b2a;
+    color: var(--bg);
     font-family: 'Oswald', sans-serif;
-    font-size: 12px;
+    font-size: clamp(11px, 2.5vw, 13px);
     font-weight: 700;
-    letter-spacing: 1px;
-    padding: 12px 18px;
+    letter-spacing: 0.12em;
+    padding: clamp(11px, 2.5vw, 14px) clamp(14px, 3.5vw, 22px);
     cursor: pointer;
     text-transform: uppercase;
+    transition: background 0.2s, transform 0.1s;
     white-space: nowrap;
+    flex-shrink: 0;
   }
-  .notify-row button:hover { background: #f0b030; }
-  .msg { font-size: 11px; color: #e8a020; min-height: 16px; margin-bottom: 24px; letter-spacing: 0.5px; }
-  .social-row {
+  .notify-btn:hover { background: var(--gold-light); }
+  .notify-btn:active { transform: scale(0.97); }
+
+  .form-msg {
+    min-height: 20px;
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    margin-top: 8px;
+    padding-left: 4px;
+    transition: opacity 0.3s;
+  }
+  .form-msg.success { color: var(--gold); }
+  .form-msg.error { color: var(--red); }
+  .form-msg.hidden { opacity: 0; }
+
+  /* ── FOOTER ── */
+  footer {
+    border-top: 1px solid rgba(255,255,255,0.05);
+    padding: clamp(14px, 3vw, 22px) clamp(20px, 6vw, 64px);
     display: flex;
-    gap: 14px;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    background: rgba(11,22,34,0.4);
   }
-  .soc {
-    width: 36px; height: 36px;
-    border: 0.5px solid rgba(255,255,255,0.12);
-    border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    color: rgba(255,255,255,0.4);
-    font-size: 16px;
-    cursor: pointer;
-    transition: border-color 0.2s, color 0.2s;
-  }
-  .soc:hover { border-color: #e8a020; color: #e8a020; }
-  .footer-txt {
-    position: absolute;
-    bottom: 16px;
-    font-size: 10px;
-    color: rgba(255,255,255,0.15);
-    letter-spacing: 2px;
+  .footer-copy {
     font-family: 'Oswald', sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    color: var(--text-muted);
     text-transform: uppercase;
-    width: 100%;
-    text-align: center;
+  }
+
+  /* ── RESPONSIVE TWEAKS ── */
+
+  /* Very small phones */
+  @media (max-width: 360px) {
+    .countdown { gap: 6px; }
+    .cd-sep { display: none; }
+  }
+
+  /* Hide badge on small screens */
+  @media (max-width: 480px) {
+    .header-badge { display: none; }
+  }
+
+  /* Tablet+ center improvements */
+  @media (min-width: 640px) {
+    .divider { max-width: 400px; }
+    .notify-section { max-width: 440px; }
+  }
+
+  /* Large screens */
+  @media (min-width: 1024px) {
+    .hero { padding-top: 60px; }
+    .notify-section { max-width: 460px; }
+  }
+
+  /* Reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    .shield-wrap { animation: none; }
+    .cd-num.pulse { animation: none; }
   }
 </style>
+</head>
+<body>
+
+<!-- Background layers -->
+<div class="bg-layer" aria-hidden="true">
+  <div class="bg-grid"></div>
+  <div class="bg-glow-1"></div>
+  <div class="bg-glow-2"></div>
+</div>
+<div class="watermark" aria-hidden="true">
+  <span>Coming Soon</span>
+</div>
 
 <div class="page">
-  <div class="grid-bg"></div>
-  <div class="glow"></div>
-  <div class="cs-label">Coming Soon</div>
 
-  <div class="inner">
-    <svg class="shield" width="110" height="126" viewBox="0 0 110 126" xmlns="http://www.w3.org/2000/svg">
-      <path d="M55 3 L104 24 L104 70 C104 99 80 118 55 126 C30 118 6 99 6 70 L6 24 Z" fill="#e8a020"/>
-      <path d="M55 10 L97 29 L97 70 C97 96 75 113 55 120 C35 113 13 96 13 70 L13 29 Z" fill="#0d1b2a"/>
-      <path d="M55 18 L90 34 L90 70 C90 93 70 108 55 114 C40 108 20 93 20 70 L20 34 Z" fill="#e8a020" opacity="0.12"/>
-      <text x="55" y="82" text-anchor="middle" font-family="Oswald,sans-serif" font-size="44" font-weight="700" fill="#e8a020">S</text>
-    </svg>
+  <!-- Header -->
+  <header>
+    <a class="header-logo" href="#" aria-label="Sachin Enterprises">
+      <svg class="logo-icon" viewBox="0 0 110 126" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M55 3 L104 24 L104 70 C104 99 80 118 55 126 C30 118 6 99 6 70 L6 24 Z" fill="#e8a020"/>
+        <path d="M55 10 L97 29 L97 70 C97 96 75 113 55 120 C35 113 13 96 13 70 L13 29 Z" fill="#0b1622"/>
+        <path d="M55 18 L90 34 L90 70 C90 93 70 108 55 114 C40 108 20 93 20 70 L20 34 Z" fill="#e8a020" opacity="0.1"/>
+        <text x="55" y="82" text-anchor="middle" font-family="Oswald,sans-serif" font-size="44" font-weight="700" fill="#e8a020">S</text>
+      </svg>
+      <div class="logo-text"><span>Sachin</span> Enterprises</div>
+    </a>
+    <div class="header-badge">© 2026</div>
+  </header>
 
-    <h1><span>Sachin</span></h1>
-    <h1>Enterprises</h1>
-    <p class="sub">Something great is coming</p>
-    <div class="line"></div>
-
-    <div class="countdown" id="countdown">
-      <div class="cd-block"><div class="cd-num" id="cd-d">00</div><div class="cd-lbl">Days</div></div>
-      <div class="cd-sep">:</div>
-      <div class="cd-block"><div class="cd-num" id="cd-h">00</div><div class="cd-lbl">Hours</div></div>
-      <div class="cd-sep">:</div>
-      <div class="cd-block"><div class="cd-num" id="cd-m">00</div><div class="cd-lbl">Mins</div></div>
-      <div class="cd-sep">:</div>
-      <div class="cd-block"><div class="cd-num" id="cd-s">00</div><div class="cd-lbl">Secs</div></div>
+  <!-- Hero -->
+  <main class="hero">
+    <div class="shield-wrap" aria-hidden="true">
+      <svg viewBox="0 0 110 126" xmlns="http://www.w3.org/2000/svg">
+        <path d="M55 3 L104 24 L104 70 C104 99 80 118 55 126 C30 118 6 99 6 70 L6 24 Z" fill="#e8a020"/>
+        <path d="M55 10 L97 29 L97 70 C97 96 75 113 55 120 C35 113 13 96 13 70 L13 29 Z" fill="#0b1622"/>
+        <path d="M55 18 L90 34 L90 70 C90 93 70 108 55 114 C40 108 20 93 20 70 L20 34 Z" fill="#e8a020" opacity="0.12"/>
+        <text x="55" y="82" text-anchor="middle" font-family="Oswald,sans-serif" font-size="44" font-weight="700" fill="#e8a020">S</text>
+      </svg>
     </div>
 
-    <div class="notify-row">
-      <input type="email" placeholder="Enter your email" id="emailIn"/>
-      <button onclick="handleNotify()">Notify Me</button>
+    <div class="title-group">
+      <div class="title-line gold">Sachin</div>
+      <div class="title-line white">Enterprises</div>
     </div>
-    <div class="msg" id="msg"></div>
+    <p class="tagline">Something great is coming</p>
 
-  
-  </div>
+    <div class="divider" aria-hidden="true">
+      <div class="div-line"></div>
+      <div class="div-dot"></div>
+      <div class="div-line rev"></div>
+    </div>
 
-  <div class="footer-txt">© 2026 Sachin Enterprises</div>
+    <!-- Countdown -->
+    <div class="countdown" id="countdown" role="timer" aria-label="Countdown to launch">
+      <div class="cd-block">
+        <div class="cd-num" id="cd-d" aria-label="Days">00</div>
+        <div class="cd-lbl">Days</div>
+      </div>
+      <div class="cd-sep" aria-hidden="true">:</div>
+      <div class="cd-block">
+        <div class="cd-num" id="cd-h" aria-label="Hours">00</div>
+        <div class="cd-lbl">Hours</div>
+      </div>
+      <div class="cd-sep" aria-hidden="true">:</div>
+      <div class="cd-block">
+        <div class="cd-num" id="cd-m" aria-label="Minutes">00</div>
+        <div class="cd-lbl">Mins</div>
+      </div>
+      <div class="cd-sep" aria-hidden="true">:</div>
+      <div class="cd-block">
+        <div class="cd-num" id="cd-s" aria-label="Seconds">00</div>
+        <div class="cd-lbl">Secs</div>
+      </div>
+    </div>
+
+    <!-- Notify form -->
+    <div class="notify-section">
+      <div class="notify-form" role="group" aria-label="Get launch notification">
+        <input
+          type="email"
+          id="emailIn"
+          placeholder="Enter your email address"
+          autocomplete="email"
+          inputmode="email"
+          aria-label="Email address"
+          maxlength="254"
+        />
+        <button class="notify-btn" onclick="handleNotify()" type="button" aria-label="Subscribe for notification">
+          Notify Me
+        </button>
+      </div>
+      <div class="form-msg hidden" id="msg" role="alert" aria-live="polite"></div>
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <p class="footer-copy">© 2026 Sachin Enterprises. All rights reserved.</p>
+  </footer>
+
 </div>
 
 <script>
-const launch = new Date('2026-09-01T00:00:00');
-function pad(n){ return String(n).padStart(2,'0'); }
-function tick(){
-  const diff = launch - new Date();
-  if(diff <= 0){ document.getElementById('cd-d').textContent='00'; return; }
-  const d = Math.floor(diff/86400000);
-  const h = Math.floor((diff%86400000)/3600000);
-  const m = Math.floor((diff%3600000)/60000);
-  const s = Math.floor((diff%60000)/1000);
-  document.getElementById('cd-d').textContent=pad(d);
-  document.getElementById('cd-h').textContent=pad(h);
-  document.getElementById('cd-m').textContent=pad(m);
-  document.getElementById('cd-s').textContent=pad(s);
-}
-tick(); setInterval(tick,1000);
+(function () {
+  'use strict';
 
-function handleNotify(){
-  const v = document.getElementById('emailIn').value.trim();
-  const m = document.getElementById('msg');
-  if(!v || !v.includes('@')){ m.style.color='#e05555'; m.textContent='Please enter a valid email.'; return; }
-  m.style.color='#e8a020'; m.textContent='✓ You will be notified on launch!';
-  document.getElementById('emailIn').value='';
-}
+  /* ── Countdown ── */
+  var LAUNCH = new Date('2026-09-01T00:00:00');
+  var els = {
+    d: document.getElementById('cd-d'),
+    h: document.getElementById('cd-h'),
+    m: document.getElementById('cd-m'),
+    s: document.getElementById('cd-s')
+  };
+  var prev = { d: -1, h: -1, m: -1, s: -1 };
+
+  function pad(n) { return String(n).padStart(2, '0'); }
+
+  function pulse(el) {
+    el.classList.remove('pulse');
+    void el.offsetWidth; // reflow
+    el.classList.add('pulse');
+  }
+
+  function setVal(key, val) {
+    var str = pad(val);
+    if (els[key] && els[key].textContent !== str) {
+      els[key].textContent = str;
+      if (prev[key] !== -1) pulse(els[key]);
+      prev[key] = val;
+    }
+  }
+
+  function tick() {
+    var diff = LAUNCH - new Date();
+    if (diff <= 0) {
+      setVal('d', 0); setVal('h', 0); setVal('m', 0); setVal('s', 0);
+      clearInterval(timer);
+      return;
+    }
+    setVal('d', Math.floor(diff / 86400000));
+    setVal('h', Math.floor((diff % 86400000) / 3600000));
+    setVal('m', Math.floor((diff % 3600000) / 60000));
+    setVal('s', Math.floor((diff % 60000) / 1000));
+  }
+
+  tick();
+  var timer = setInterval(tick, 1000);
+
+  /* ── Notify ── */
+  var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  var submitted = false;
+
+  function showMsg(text, type) {
+    var el = document.getElementById('msg');
+    el.textContent = text;
+    el.className = 'form-msg ' + type;
+  }
+
+  function hideMsg() {
+    document.getElementById('msg').className = 'form-msg hidden';
+  }
+
+  window.handleNotify = function () {
+    if (submitted) return;
+    var input = document.getElementById('emailIn');
+    var val = input.value.trim();
+
+    if (!val || !EMAIL_RE.test(val)) {
+      showMsg('Please enter a valid email address.', 'error');
+      input.focus();
+      return;
+    }
+
+    submitted = true;
+    showMsg('✓ You will be notified on launch!', 'success');
+    input.value = '';
+    input.blur();
+
+    // Allow re-subscribe after 5 s
+    setTimeout(function () { submitted = false; }, 5000);
+  };
+
+  /* Allow Enter key on input */
+  document.getElementById('emailIn').addEventListener('keydown', function (e) {
+    if (e.key === 'Enter') window.handleNotify();
+  });
+
+})();
 </script>
+</body>
+</html>
